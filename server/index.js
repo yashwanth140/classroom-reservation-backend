@@ -1,10 +1,11 @@
 // server/index.js
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
 require('dotenv').config();
 
-// ✅ Strict CORS configuration for Azure Static Web Apps
+// ✅ CORS configuration for local + Azure deployments
 const allowedOrigins = [
   'http://localhost:3000',
   'https://gentle-smoke-0be6c8610.6.azurestaticapps.net'
@@ -12,14 +13,17 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
+    // Allow requests with no origin (like curl or Postman) or matching origins
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.error('❌ CORS BLOCKED from:', origin);
       callback(new Error('CORS not allowed from this origin: ' + origin));
     }
   },
   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 
 app.use(express.json());
