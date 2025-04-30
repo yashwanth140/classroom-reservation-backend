@@ -7,7 +7,7 @@ const db = mysql.createConnection({
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   port:     process.env.DB_PORT,
-  ssl: { rejectUnauthorized: true }  // ADD THIS LINE for Azure Secure SSL
+  ssl: { rejectUnauthorized: true }  // LINE for Azure Secure SSL
 });
 
 db.connect(err => {
